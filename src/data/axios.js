@@ -27,8 +27,14 @@ function $fetchData(method, params, data){
     });
 }
 
-// 首页所有项目列表
-export const getAllProjects = () => $fetchData('get','getProjects');
+// 正在进行的事项列表
+export const getOnGoingList = () => $fetchData('get','getOnGoingList');
 
-// 发布项目
-export const release = (title, description, creator, money, deadLine) => $fetchData('post','release',{title, description, creator, money, deadLine});
+// 已完成列表
+export const getFinishedList = () => $fetchData('get','getFinishedList');
+
+// 添加新事项
+export const addMemo = (title, description) => $fetchData('post','addMemo',{title, description});
+
+// 编辑
+export const editMemo = (id, title, description) => $fetchData('post','editMemo',{id, title, description});
