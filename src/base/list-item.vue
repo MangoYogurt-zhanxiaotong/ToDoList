@@ -1,7 +1,7 @@
 <template>
     <div class="item clearfix">
        <input type="checkbox" class="checkbox"/>
-       <p class="content">打电话</p>
+       <p class="content">{{title}}</p>
        <div class="remove">x</div>
        <!-- <a href="#" class="edit">📝</a> -->
        <a href="#" class="isTop">📌</a>
@@ -11,6 +11,7 @@
 <script>
 export default {
     name: 'list-item',
+    props: ['id', 'title'],
     data () {
         return {
 

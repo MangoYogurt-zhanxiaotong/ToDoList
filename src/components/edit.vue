@@ -1,11 +1,11 @@
 <template>
     <div class="edit">
         <form action="">
-            <label for="title">标题</label>
-            <input type="text" placeholder = "请输入标题" name="title">
+            <label for="title">标题（必填项）</label>
+            <input type="text" placeholder = "请输入标题" name="title" v-model="title">
             <label for="title">描述</label>
-            <textarea name="desc" id="" cols="30" rows="10" placeholder="请输入描述"></textarea>
-            <div class="add">添加</div>
+            <textarea name="desc" id="" cols="30" rows="10" placeholder="请输入描述" v-model="desc"></textarea>
+            <div class="add" v-on:click="add">添加</div>
         </form>
     </div>
 </template>
@@ -15,18 +15,22 @@ export default {
     name: 'edit',
     data () {
         return {
-
+            title: '',
+            desc: ''
         }
     },
-    created () {
-        //this.add();
-    },
     methods: {
-        // add(){
-        //     addMemo('remind1','desc1').then(res => {
-        //         console.log(res);
-        //     });
-        // }
+        add() {
+            if (this.title) {
+                addMemo(this.title,this.desc).then(res => {
+                    console.log('添加成功');
+                    // 跳转回首页
+                    setTimeout(function(){
+                        this.$router.push('/')
+                    }.bind(this),2000);
+                });
+            } 
+        }
     }
 }
 </script>
