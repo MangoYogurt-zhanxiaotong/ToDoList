@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-Vue.use(Router)
+Vue.use(Router);
 
 const Home = () => import('@/components/home');
 const Edit = () => import('@/components/edit');
@@ -18,7 +18,10 @@ export default new Router({
     {
       path: '/edit',
       name: 'Edit',
-      component: Edit
+      component: Edit,
+      props: (router) => ({
+        id: router.query.id
+      })
     },{
       path: '/finishList',
       name: 'FinishList',

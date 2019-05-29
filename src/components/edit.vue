@@ -10,18 +10,31 @@
     </div>
 </template>
 <script>
-import { addMemo } from '../data/axios'
+import { addMemo, getMemo, updateMemo } from '../data/axios'
 export default {
     name: 'edit',
+    props: ['id'],
     data () {
         return {
             title: '',
             desc: ''
         }
     },
+    created() {
+        // 编辑获得之前的信息
+        if(this.id) {
+            getMemo(this.id).then(result => {
+                this.title = result.data[0].title;
+                this.desc = result.data[0].description;
+            },error => {
+                console.log(error);
+            });
+        }
+    },
     methods: {
         add() {
-            if (this.title) {
+            if (this.title && !this.id) {
+                // 添加新事项
                 addMemo(this.title,this.desc).then(res => {
                     console.log('添加成功');
                     // 跳转回首页
@@ -29,7 +42,16 @@ export default {
                         this.$router.push('/')
                     }.bind(this),2000);
                 });
-            } 
+            } else if (this.title && this.id) {
+                // 编辑旧事项
+                updateMemo(this.id, this.title, this.desc).then(res => {
+                    console.log('修改成功');
+                    // 跳转回首页
+                    setTimeout(function(){
+                        this.$router.push('/')
+                    }.bind(this),2000);
+                });
+            }
         }
     }
 }

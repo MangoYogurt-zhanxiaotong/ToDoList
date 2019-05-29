@@ -1,20 +1,43 @@
 <template>
     <div class="item clearfix">
-       <input type="checkbox" class="checkbox"/>
-       <p class="content">{{title}}</p>
-       <div class="remove">x</div>
-       <!-- <a href="#" class="edit">📝</a> -->
-       <a href="#" class="isTop">📌</a>
+        <input type="checkbox" class="checkbox"/>
+        <p class="content">{{title}}</p>
+        <div class="remove" v-on:click.prevent="remove">x</div>
+        <div class="isTop" v-on:click.prevent="toggleTop" v-if="path == '/'">📌</div>
      </div>
 </template>
 
 <script>
+import { deleteMemo, updateTop } from '../data/axios'
 export default {
     name: 'list-item',
-    props: ['id', 'title'],
+    props: ['id', 'title', 'flagTop'],
     data () {
         return {
-
+            path: ''
+        }
+    },
+    created() {
+        this.path = this.$route.path;
+    },
+    methods: {
+        // 删除
+        remove() {
+            deleteMemo(this.id).then(result => {
+                console.log("删除成功");
+                this.$emit("getAllList");
+            }, error => {
+                console.log(error);
+            });
+        },
+        // 置顶 与 取消置顶
+        toggleTop() {
+            updateTop(this.id, !this.flagTop).then(result => {
+                console.log("更新成功");
+                this.$emit("getAllList");
+            }, error => {
+                console.log(error);
+            });
         }
     }
 }
@@ -44,6 +67,7 @@ export default {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+        color: #000;
     }
     .item .remove {
         position: absolute;
@@ -53,6 +77,7 @@ export default {
         transform: translateY(-50%);
         color: #ababab;
         font-size: 20px;
+        cursor: pointer;
     }
     /* .item .edit {
         position: absolute;

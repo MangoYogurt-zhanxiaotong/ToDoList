@@ -3,21 +3,24 @@
         <Header></Header>
         <div class="container">
             <div class="title">
-            <p class="status">已完成</p>
-            <p class="clear">clear</p>
-            <p class="number">12</p>
+            <p class="status">正在进行</p>
+            <p class="clear" v-on:click="clearAll">clear</p>
+            <p class="number">{{finishedList.length || 0}}</p>
             </div>
             <!-- 单个条目 -->
-            <list-item></list-item>
+            <div class="list" v-for="item in finishedList" :key="item.ID">
+                <list-item :id="item.ID" :title="item.title" :flagTop="item.flagTop" @getAllList="getAllFinishedList"></list-item>
+            </div>
         </div>
         <Footer></Footer>
     </div>
 </template>
 
 <script>
-    import Header from '@/base/header'
-    import ListItem from '@/base/list-item'
-    import Footer from '@/base/footer'
+import Header from '@/base/header'
+import ListItem from '@/base/list-item'
+import Footer from '@/base/footer'
+import { getFinishedList, deleteMemoBatch } from '../data/axios'
 
     export default {
         name: 'FinishList',
@@ -28,11 +31,27 @@
         },
         data () {
             return {
-                
+                finishedList: []
             }
         },
         created () {
-
+            this.getAllFinishedList();
+        },
+        methods: {
+            // 获取所有已完成的事项
+            getAllFinishedList() {
+                getFinishedList().then(res => {
+                    console.log(res);
+                    this.finishedList = res.data;
+                });
+            },
+            // 批量删除
+            clearAll() {
+                deleteMemoBatch(1).then(res => {
+                    console.log('删除成功');
+                    this.getAllFinishedList();
+                });
+            }
         }
     }
 </script>
@@ -60,6 +79,7 @@
         display: inline-block;
         padding: 2px 3px;
         margin-left: 10px;
+        cursor: pointer;
     }
     .title .number {
         position: absolute;
