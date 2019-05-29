@@ -4,10 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+import  VueQuillEditor from 'vue-quill-editor'
 
 import './style/public.css'
 
 Vue.config.productionTip = false
+
+Vue.use(VueQuillEditor);
 
 /* eslint-disable no-new */
 new Vue({
