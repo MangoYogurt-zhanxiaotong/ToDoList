@@ -51,6 +51,13 @@ export const editMemo = (id, title, description) => $fetchData('post','editMemo'
 // 置顶 与 取消置顶
 export const updateTop = (id, flagTop) => $fetchData('post','updateTop',{id, flagTop});
 
+// 更新状态
+export const updateStatus = (id, status) => $fetchData('post','updateStatus',{id,status});
+
 // 批量删除
 export const deleteMemoBatch = (status) => $fetchData('post','deleteMemoBatch',{status});
+
+// 搜索
+export const search = (title, status) => $fetchData('post', 'search', {title, status});
+
 

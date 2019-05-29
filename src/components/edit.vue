@@ -5,7 +5,8 @@
             <input type="text" placeholder = "请输入标题" name="title" v-model="title">
             <label for="title">描述</label>
             <textarea name="desc" id="" cols="30" rows="10" placeholder="请输入描述" v-model="desc"></textarea>
-            <div class="add" v-on:click="add">添加</div>
+            <div class="add" v-on:click="update" v-if="this.id">更新</div>
+            <div class="add" v-on:click="add" v-else>添加</div>
         </form>
     </div>
 </template>
@@ -39,16 +40,19 @@ export default {
                     console.log('添加成功');
                     // 跳转回首页
                     setTimeout(function(){
-                        this.$router.push('/')
+                        this.$router.push('/');
                     }.bind(this),2000);
                 });
-            } else if (this.title && this.id) {
+            }
+        },
+        update() {
+            if (this.title && this.id) {
                 // 编辑旧事项
                 updateMemo(this.id, this.title, this.desc).then(res => {
                     console.log('修改成功');
                     // 跳转回首页
                     setTimeout(function(){
-                        this.$router.push('/')
+                        this.$router.push('/');
                     }.bind(this),2000);
                 });
             }

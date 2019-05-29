@@ -2,16 +2,27 @@
     <header>
         <div class="content clearfix">
             <router-link to="/" class="goHome">TodoList</router-link>
-            <input type="text" placeholder="搜索">
+            <input type="text" placeholder="搜索" v-model="text" @keyup.enter="find">
         </div>
     </header>
 </template>
 <script>
+import { search } from '../data/axios'
 export default {
     name: 'Header',
     data () {
         return {
-
+            text: ''
+        }
+    },
+    methods: {
+        find() {
+            let status = this.$route.name == 'Home' ? 0 : 1;
+            search(this.text, status).then(result => {
+                console.log(result);
+            }, error => {
+                console.log(error);
+            });
         }
     }
 }

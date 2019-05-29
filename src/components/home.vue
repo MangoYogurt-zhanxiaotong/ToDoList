@@ -10,7 +10,7 @@
         <p class="flagTop" v-if="topList.length > 0">已置顶</p>
         <div class="list" v-for="item in topList" :key="item.ID">
            <router-link :to="{ path: 'edit', query: {id: item.ID}}">
-            <list-item :id="item.ID" :title="item.title" :flagTop="item.flagTop" @getAllList="getAllList"></list-item>
+            <list-item :id="item.ID" :title="item.title" :flagTop="item.flagTop" :status="item.status" @getAllList="getAllList"></list-item>
            </router-link>
         </div>
         <div class="gap" v-if="topList.length > 0"></div>

@@ -1,7 +1,7 @@
 <template>
     <footer>
         <div class="content clearfix">
-            <router-link to="/finishList" class="finished">已完成</router-link>
+            <router-link to="/finishList" class="finished">{{btn}}</router-link>
             <router-link to="/edit" class="add">添加</router-link>
         </div>
     </footer>
@@ -11,9 +11,25 @@ export default {
     name: 'Footer',
     data () {
         return {
-
+            btn: '已完成'
         }
-    }
+    },
+    methods: {
+        // updatePath() {
+        //     console.log(1);
+        // }
+    },
+    watch: {
+        // $route(to, from){
+            // if(to.path == '/') {
+            //     this.btn = '已完成';
+            // } else {
+            //     this.btn = '进行中';
+            // }
+            // this.updatePath();
+        // }
+        // '$route':'getPath'
+    },  
 }
 </script>
 <style scoped>

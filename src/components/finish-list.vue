@@ -3,13 +3,15 @@
         <Header></Header>
         <div class="container">
             <div class="title">
-            <p class="status">正在进行</p>
+            <p class="status">已完成</p>
             <p class="clear" v-on:click="clearAll">clear</p>
             <p class="number">{{finishedList.length || 0}}</p>
             </div>
             <!-- 单个条目 -->
             <div class="list" v-for="item in finishedList" :key="item.ID">
-                <list-item :id="item.ID" :title="item.title" :flagTop="item.flagTop" @getAllList="getAllFinishedList"></list-item>
+                <router-link :to="{ path: 'edit', query: {id: item.ID}}">
+                    <list-item :id="item.ID" :title="item.title" :flagTop="item.flagTop" :status="item.status" @getAllList="getAllFinishedList"></list-item>
+                </router-link>
             </div>
         </div>
         <Footer></Footer>
