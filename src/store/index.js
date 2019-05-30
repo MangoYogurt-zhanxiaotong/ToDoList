@@ -1,15 +1,28 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import * as actions from './actions'
-import * as getters from './getters'
-import state from './state'
-import mutations from './mutations'
- 
+import Vue from 'vue'
+import Vuex from 'vuex'
+import home from './home'
+import edit from './edit'
+import finish from './finish'
+import item from './item'
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    state,
-    getters,
-    mutations,
-    actions
+    state: {
+        isFinishPage: true
+    },
+    mutations: {
+        updateBtn(state, flag) {
+            state.isFinishPage = flag;
+        }
+    },
+    actions: {
+
+    },
+    modules: {
+        home,
+        edit,
+        finish,
+        item
+    }
 });

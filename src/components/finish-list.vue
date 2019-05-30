@@ -22,7 +22,7 @@
 import Header from '@/base/header'
 import ListItem from '@/base/list-item'
 import Footer from '@/base/footer'
-import { getFinishedList, deleteMemoBatch } from '../data/axios'
+import { mapState, mapMutations, mapActions } from 'vuex'
 
     export default {
         name: 'FinishList',
@@ -33,27 +33,22 @@ import { getFinishedList, deleteMemoBatch } from '../data/axios'
         },
         data () {
             return {
-                finishedList: []
+                
             }
+        },
+        computed: {
+            ...mapState({
+                'finishedList': state => state.finish.finishedList,
+                'status': state => state.finish.status
+            })
         },
         created () {
             this.getAllFinishedList();
         },
         methods: {
-            // 获取所有已完成的事项
-            getAllFinishedList() {
-                getFinishedList().then(res => {
-                    console.log(res);
-                    this.finishedList = res.data;
-                });
-            },
-            // 批量删除
-            clearAll() {
-                deleteMemoBatch(1).then(res => {
-                    console.log('删除成功');
-                    this.getAllFinishedList();
-                });
-            }
+            ...mapActions([
+                'getAllFinishedList', 'clearAll'
+            ])
         }
     }
 </script>

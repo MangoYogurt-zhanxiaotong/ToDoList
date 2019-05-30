@@ -3,51 +3,55 @@
         <input type="checkbox" class="checkbox" :checked="checked" v-on:click.prevent="changeStatus"/>
         <p class="content">{{title}}</p>
         <div class="remove" v-on:click.prevent="remove">x</div>
-        <div class="isTop" v-on:click.prevent="toggleTop" v-if="path == '/'">📌</div>
+        <div class="isTop" v-on:click.prevent="toggleTop" v-if="this.$route.path == '/'">📌</div>
      </div>
 </template>
 
 <script>
-import { deleteMemo, updateTop, updateStatus } from '../data/axios'
+import { mapState, mapActions, mapMutations } from 'vuex';
+
 export default {
     name: 'list-item',
     props: ['id', 'title', 'flagTop', 'status'],
     data () {
         return {
-            path: '',
             checked: false
         }
     },
+    computed: {
+
+    },
     created() {
-        this.path = this.$route.path;
+        // 每个组件私有数据放在 data 中
         this.checked = !!this.status;
     },
     methods: {
-        // 删除
+        ...mapActions([
+            'removeItem', 'toggleTopItem', 'changeItemStatus'
+        ]),
         remove() {
-            deleteMemo(this.id).then(result => {
-                console.log("删除成功");
+            this.removeItem(this.id).then(result => {
+                console.log('删除成功');
                 this.$emit("getAllList");
-            }, error => {
+            },error => {
                 console.log(error);
             });
         },
-        // 置顶 与 取消置顶
         toggleTop() {
-            updateTop(this.id, !this.flagTop).then(result => {
-                console.log("更新成功");
+            
+            this.toggleTopItem({id: this.id, flagTop: this.flagTop}).then(result => {
+                console.log('更新成功');
                 this.$emit("getAllList");
-            }, error => {
+            },error => {
                 console.log(error);
             });
         },
-        // 改变状态
         changeStatus() {
             this.checked = !this.checked;
-            updateStatus(this.id, this.checked).then(result => {
-                console.log("更新成功");
+            this.changeItemStatus({id: this.id, checked: this.checked}).then(result => {
+                console.log('更新成功');
                 this.$emit("getAllList");
-            }, error => {
+            },error => {
                 console.log(error);
             });
         }

@@ -7,13 +7,13 @@
           <p class="clear" v-on:click="clearAll">clear</p>
           <p class="number">{{onGoingList.length || 0}}</p>
         </div>
-        <p class="flagTop" v-if="topList.length > 0">已置顶</p>
+        <p class="flagTop" v-if="topList && topList.length > 0">已置顶</p>
         <div class="list" v-for="item in topList" :key="item.ID">
            <router-link :to="{ path: 'edit', query: {id: item.ID}}">
             <list-item :id="item.ID" :title="item.title" :flagTop="item.flagTop" :status="item.status" @getAllList="getAllList"></list-item>
            </router-link>
         </div>
-        <div class="gap" v-if="topList.length > 0"></div>
+        <div class="gap" v-if="topList && topList.length > 0"></div>
         <!-- 单个条目 -->
         <div class="list" v-for="item in notTopList" :key="item.ID">
            <router-link :to="{ path: 'edit', query: {id: item.ID}}">
@@ -29,7 +29,7 @@
   import Header from '@/base/header'
   import ListItem from '@/base/list-item'
   import Footer from '@/base/footer'
-  import { getOnGoingList, deleteMemoBatch } from '../data/axios'
+  import { mapState, mapActions, mapMutations } from 'vuex'
 
   export default {
     name: 'Home',
@@ -40,35 +40,23 @@
     },
     data () {
       return {
-        onGoingList: [],
-        topList: [],
-        notTopList: []
+       
       }
+    },
+    computed: {
+      ...mapState({
+        'topList': state => state.home.topList,
+        'notTopList': state => state.home.notTopList,
+        'onGoingList': state => state.home.onGoingList
+      })
     },
     created () {
       this.getAllList();
     },
     methods: {
-      // 获取所有正在进行中的事项
-      getAllList() {
-        getOnGoingList().then(res => {
-          console.log(res);
-          this.onGoingList = res.data;
-          this.topList = this.onGoingList.filter(item => {
-            return item.flagTop == 1;
-          });
-          this.notTopList = this.onGoingList.filter(item => {
-            return item.flagTop == 0;
-          });
-        });
-      },
-      // 批量删除
-      clearAll() {
-        deleteMemoBatch(0).then(res => {
-          console.log('删除成功');
-          this.getAllList();
-        });
-      }
+      ...mapActions([
+        'getAllList', 'clearAll'
+      ])
     },
   }
 </script>

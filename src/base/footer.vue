@@ -1,34 +1,31 @@
 <template>
     <footer>
         <div class="content clearfix">
-            <router-link to="/finishList" class="finished">{{btn}}</router-link>
+            <router-link to="/" class="finished" v-if="isFinishPage">进行中</router-link>
+            <router-link to="/finishList" class="finished" v-else>已完成</router-link>
             <router-link to="/edit" class="add">添加</router-link>
         </div>
     </footer>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
     name: 'Footer',
     data () {
         return {
-            btn: '已完成'
+            
         }
     },
+    computed: {
+        ...mapState([
+            'isFinishPage'
+        ])
+    },
     methods: {
-        // updatePath() {
-        //     console.log(1);
-        // }
+        
     },
     watch: {
-        // $route(to, from){
-            // if(to.path == '/') {
-            //     this.btn = '已完成';
-            // } else {
-            //     this.btn = '进行中';
-            // }
-            // this.updatePath();
-        // }
-        // '$route':'getPath'
+        
     },  
 }
 </script>

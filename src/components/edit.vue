@@ -4,12 +4,10 @@
             <label for="title">标题（必填项）</label>
             <input type="text" placeholder = "请输入标题" name="title" v-model="title">
             <label for="title">描述</label>
-            <!-- <textarea name="desc" id="" cols="30" rows="10" placeholder="请输入描述" v-model="desc"></textarea> -->
             <quill-editor 
                 v-model="desc" 
                 ref="myQuillEditor"
-                :options="options"
-                @blur="onEditorBlur($event)">
+                :options="options">
             </quill-editor>
             <div class="add" v-on:click="update" v-if="this.id">更新</div>
             <div class="add" v-on:click="add" v-else>添加</div>
@@ -17,62 +15,55 @@
     </div>
 </template>
 <script>
-import { addMemo, getMemo, updateMemo } from '../data/axios'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import * as Quill from 'quill'
+import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
     name: 'edit',
     props: ['id'],
     data () {
         return {
-            title: '',
-            desc: '',
-            options: {
-                placeholder: ''
+            
+        }
+    },
+    computed: {
+        ...mapState({
+            'options': state => state.edit.options
+        }),
+        title: {
+            get() {
+                return this.$store.state.edit.title
+            },
+            set(title) {
+                this.$store.commit('updateTitle', title);
+            }
+        },
+        desc: {
+            get() {
+                return this.$store.state.edit.desc
+            },
+            set(desc) {
+                this.$store.commit('updateDesc', desc);
             }
         }
     },
     created() {
-        // 编辑获得之前的信息
         if(this.id) {
-            getMemo(this.id).then(result => {
-                this.title = result.data[0].title;
-                this.desc = result.data[0].description;
-            },error => {
-                console.log(error);
-            });
+            this.getSingleItem(this.id);
         }
     },
     methods: {
+        ...mapActions([
+            'addItem', 'updateItem', 'getSingleItem'
+        ]),
         add() {
-            if (this.title && !this.id) {
-                // 添加新事项
-                addMemo(this.title,JSON.stringify(this.desc)).then(res => {
-                    console.log('添加成功');
-                    // 跳转回首页
-                    setTimeout(function(){
-                        this.$router.push('/');
-                    }.bind(this),2000);
-                });
-            }
+            this.addItem(this.id);
         },
         update() {
-            if (this.title && this.id) {
-                // 编辑旧事项
-                updateMemo(this.id, this.title, this.desc).then(res => {
-                    console.log('修改成功');
-                    // 跳转回首页
-                    setTimeout(function(){
-                        this.$router.push('/');
-                    }.bind(this),2000);
-                });
-            }
-        },
-        onEditorBlur(editor) {
-            console.log(this.desc);
+            this.updateItem(this.id);
         }
     }
 }
