@@ -94,3 +94,11 @@ input:focus {
 body {
   background: #CDCDCD;
 }
+
+/* 编辑器 */
+.ql-container {
+  height: 70% !important;
+}
+.ql-container.ql-snow {
+  border: none !important;
+}

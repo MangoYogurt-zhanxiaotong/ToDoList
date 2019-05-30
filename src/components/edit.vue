@@ -8,6 +8,7 @@
             <quill-editor 
                 v-model="desc" 
                 ref="myQuillEditor"
+                :options="options"
                 @blur="onEditorBlur($event)">
             </quill-editor>
             <div class="add" v-on:click="update" v-if="this.id">更新</div>
@@ -20,7 +21,7 @@ import { addMemo, getMemo, updateMemo } from '../data/axios'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-import * as Quill from 'quill'    // 引入编辑器
+import * as Quill from 'quill'
 
 export default {
     name: 'edit',
@@ -28,7 +29,10 @@ export default {
     data () {
         return {
             title: '',
-            desc: ''
+            desc: '',
+            options: {
+                placeholder: ''
+            }
         }
     },
     created() {
@@ -73,11 +77,6 @@ export default {
     }
 }
 </script>
-<style lang="">
-    .ql-container {
-        height: 70% !important;
-    }
-</style>
 <style scoped>
     .edit {
         width: 70%;
